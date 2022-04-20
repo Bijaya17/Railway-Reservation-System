@@ -1,498 +1,681 @@
-#include<stdio.h>
-#include<windows.h>
-#include<stdlib.h>
-#include<conio.h>
-#include<time.h>
-#include<string.h>
-
-void viewinfo();
-void bookticket();
-void cancelticket();
-void admin();
-void password();
-void viewpassenger();
-void addtrain();
-void dlttrain();
-void awrite();
-void aread();
-void bookticket_write();
-void viewpassengers_read();
-
-struct adddata
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <string.h>
+#include <time.h>
+using namespace std;
+char f[10] = "f";
+char s[10] = "s";
+int addr, ad, flag, f1, d, m, i, amt;
+float tamt;
+class login
 {
-	char si[10];
-	char train_number[10];
-	char train_name[20];
-	char start[10];
-	char destination[10];
-	char price[10];
-	int seat;
-	char time[10];
-} add[1000];
-struct bookticket
+public:
+char id[100];
+char pass[100];
+char password[10];
+void getid()
 {
-	char train_number[20];
-	char name[20];
-	char phone[20];
-	char date[20];
-	int seat;
-}book[1000];
-//---------------------------------------structure close----------------------------------------------
-//---------------------------------------global variable----------------------------------------------
-int k=0,u=0;
-char trn_nmbr[100],name[100],phn[100];
-
-int main()
-{
-	aread();
-	viewpassengers_read();
-	system("COLOR 0f");
-	int ch;
-	time_t currentTime;
-	time(&currentTime);
-	printf("\n\t\t\t     %s\n",ctime(&currentTime));
-	
-	printf("\n\t\t\t*********************************\n");
-	printf("\t\t\t*******RAILWAY RESERVATION SYSTEM*******\n");
-	printf("\t\t\t*********************************\n");
-	printf("\n\t\t\t<<<<<<<<<<WELCOME USERS>>>>>>>>>>\n");
-	printf("\n\n\t\t\t\t      MENU\n");
-	printf("\t\t\t             ******");
-	printf("\n\t\t\t[1] VIEW INFORMATION\n");
-	printf("\n\t\t\t[2] BOOK TICKET\n");
-	printf("\n\t\t\t[3] CANCEL TICKET\n");
-	printf("\n\t\t\t[4] ADMIN");
-	printf("\n\n\t\t\t[5] EXIT\n");
-	printf("\n\t\t\t********************************");
-	printf("\n\t\t\t********************************");
-	printf("\n\t\t\tENTER YOUR CHOICE: ");
-	scanf("%d",&ch);
-	switch(ch)
-	{
-		case 1:
-			viewinfo();
-			break;
-			case 2:
-				bookticket();
-				break;
-				case 3:
-					cancelticket();
-					break;
-					case 4:
-						password();
-						break;
-						case 5:
-							system("cls");
-							printf("\n\t\t\t =========================================\n");
-							printf("\t\t\t *******RAILWAY RESERVATION SYSTEM*******\n");
-							printf("\t\t\t ===============================================\n");
-							printf("\n\n\t\t\tBMROUGHT TO YOU BY\n\n");
-							printf("\t\t\t\t***Learnprogramo***\n");
-							getch();
-							exit(0);
-							break;
-							default:
-								system("cls");
-								printf("\n\t\t\t==============================================\n");
-								printf("\t\t\t   *******RAILWAY RESERVATION SYSTEM*******\n");
-								printf("\t\t\t   ==============================================\n");
-								printf("\n\n\t\t\t<<<<<<<<YOU ENTERED WRONG CHOICE>>>>>>>>\n");
-								printf("\t\t\t<<<<<<<<PLEASE ENTER RIGHT THING>>>>>>>>\n");
-								getch();
-								system("cls");
-								main();
-	}
-	return 0;
+cout << "\nEnter your id:";
+std::cin >> id;
+std::cout << "Enter the Password: ";
+std::cin >> password;
+std::cout << "\n";
+strcpy(pass,password);
 }
-//---------------------------------------main function close--------------------------------------------------
-//---------------------------------------book ticket function-----------------------------------------------
-void bookticket()
+void displayid()
 {
-	int c,j,n,i,found=-1;
-	char v,train_number[10];
-	system ("cls");
-	aread();
-	printf("\n\n\t\t\t============================================");
-	printf("\n\t\t\t**********RAILWAY RESERVATION SYSTEM**********\n");
-	printf("\t\t\t==================================================");
-	printf("\n\n\t\t\thow many ticket do you want to buy: ");
-	scanf("%d",&n);
-	for(j=u;j<u+n;j++)
-	{
-	printf("\n\n\t\t\tEnter train number: ");
-	scanf("%s", book[j].train_number);
-	for(i=0;i<k;i++)
-	{
-	if(strcmp(book[j].train_number,add[i].train_number)==0)
-	{
-	if(add[i].seat==0)
-	{
-		printf("\n\n\t\t\tnot available seat");
-		
-		getch();
-		system("cls");
-		main();
-	}
-	else
-	{
-	    found=1;
-		printf("\n\t\t\tenter book %d no ticket: ",j+1);
-		printf("\n\t\t\tenter date: ");
-		scanf("%s",book[j].date);
-		printf("\n\t\t\tenter your name: ");
-		scanf("%s",book[j].name);
-		printf("\n\t\t\tenter your phone number: ");
-		scanf("%s",book[j].phone);
-		printf("\n\t\t\tseat number : %d",add[i].seat );
-		book[j].seat=add[i].seat;
-		bookticket_write();
-		add[i].seat--;
-		awrite();
-		}
-	}
+    std::cout << "\n|" << "User ID:" << "\t" << "|" << "Password\n";
+std::cout << "|" << id << "\t\t" << "|" << pass << "\n\n";
 }
-	if(found==-1)
-	{
-		printf("\n\n\t\t\ttrain not found!!!");
-		getch();
-		system("cls");
-		main();
-	}
-	}
-		u=j;
-		bookticket_write();
-		printf("\n\n\t\t\tenter '1' for main menu & press any key to exit: ");
-		scanf("%d",&c);
-			if(c==1)
-			{
-				system("cls");
-				main();
-			}
-			if(c!=1)
-			{
-				exit;
-			}			
-}
-//---------------------------------------cancel ticket function---------------------------------------------
-void cancelticket()
+};
+class Detail
 {
-	viewpassengers_read();
-    char pnnmbr[100];
-    int location = -1,e;
-    printf ("\n\n\t\t\tenter phone number: ");
-    scanf ("%s",pnnmbr);
-    for (e=0;e<u;e++)
+public:
+int tno;
+char tname[100];
+char bp[100];
+char dest[100];
+ 
+int c1,c1fare;
+int c2,c2fare;
+int d,m,y;
+void getDetail()
+{
+std::cout << "\n--Add New details--\n";
+std::cout << "Train no: ";
+std::cin >> tno;
+std::cout << "Train Name: ";
+std::cin >> tname;
+std::cout << "Boarding point: ";
+std::cin >> bp;
+std::cout << "Destination pt: ";
+std::cin >> dest;
+std::cout << "No of seats in first class & fare per ticket: ";
+std::cin >> c1 >> c1fare;
+std::cout << "No of seats in second class & fare per ticket: ";
+std::cin >> c2 >> c2fare;
+std::cout << "Date of travel\n";
+std::cout << "Day: ";
+std::cin >> d;
+std::cout << "Month: ";
+std::cin >> m;
+std::cout << "Year: ";
+std::cin >> y;
+}
+void displaydetail()
+{
+    std::cout << "\n|Train No." << "\t" << "|Train Name" << "\t" << "|Boarding pt." << "\t" << "|Destination pt."  <<"\t";
+std::cout << "|F-Class" << "\t"<< "|F-Class Fare" << "\t" << "|S-Class" << "\t" << "|S-Class Fare" <<"\t";
+std::cout << "|Day" << "-" << "Month" << "-" << "Year" << "\n";
+ 
+std::cout << "|" << tno << "\t\t" << "|" << tname << "\t\t" << "|" << bp << "\t\t" << "|" << dest <<"\t\t\t";
+std::cout << "|" << c1 << "\t\t" << "|"<< c1fare << "\t\t" << "|" << c2<< "\t\t" << "|" << c2fare <<"\t\t";
+std::cout << "|" << d << "-" << m << "-" << y << "\n";
+}
+};
+class reser
+{
+public:
+int pnr;
+int tno;
+char tname[100];
+char bp[10];
+char dest[100];
+char pname[10][100];
+int age[20];
+char clas[10];
+int nosr;
+int i;
+int d,m,y;
+int con;
+ 
+float amc;
+void getresdet()
+{
+cout<<"Enter the details as follows\n";
+cout<<"Train no:";
+cin>>tno;
+cout<<"Train name:";
+cin>>tname;
+cout<<"Boarding point:";
+cin>>bp;
+cout<<"Destination pt:";
+cin>>dest;
+cout<<"No of seats required:";
+cin>>nosr;
+for(i=0;i<nosr;i++)
+{
+cout<<"Passenger name:";
+std::cin >> pname[i];
+cout<<"Passenger age:";
+std::cin>>age[i];
+}
+cout<<"Enter the class f-first class s-second class:";
+std::cin >> clas;
+cout<<"Date of travel:";
+std::cin>>d>>m>>y;
+cout<<"Enter the concession category\n";
+cout<<"1.Military\n2.Senior citizen\n";
+cout<<"3.Children below 5 yrs\n4.None\n";
+std::cin>>con;
+cout<<"…………END OF GETTING DETAILS…………\n";
+}
+void displayresdet()
+{
+cout<<"Pnr no: "<<pnr;
+cout<<"\nTrain no: "<<tno;
+cout<<"\nTrain name: "<<tname;
+cout<<"\nBoarding point: "<<bp;
+cout<<"\nDestination pt: "<<dest;
+cout<<"\nNo of seats reserved: "<<nosr;
+for(i=0;i<nosr;i++)
+{
+cout<<"\nPassenger name: ";puts(pname[i]);
+cout<<"Passenger age: "<<age[i];
+}
+ 
+cout<<"\nYour class: ";puts(clas);
+cout<<"\nDate of reservation: "<<d<<"-"<<m<<"-"<<y;
+cout<<"\nYour concession category: "<<con;
+cout<<"\nYou must pay: "<<amc<<endl;
+cout<<"*************\n";
+}
+};
+class canc
+{
+    public:
+    int pnr;
+    int tno;
+    char tname[100];
+    char bp[10];
+    char dest[100];
+    char pname[10][100];
+    int age[20];
+    int i;
+    char clas[10];
+    int nosc;
+    int d, m, y;
+    float amr;
+    void getcancdet()
     {
-        if (strcmp(pnnmbr,book[e].phone)==0)
+        std::cout << "Enter the details as follows\n";
+        std::cout << "Pnr no:";
+        std::cin >> pnr;
+        std::cout << "Date of cancellation:";
+        std::cin >> d >> m >> y;
+        std::cout << "………..END OF GETTING DETAILS………..\n";
+    }
+    void displaycancdet()
+    {
+        std::cout << "…………………………………….\n";
+        std::cout << "…………………………………….\n";
+        std::cout << "Pnr no:" << pnr;
+        std::cout << "\nTrain no:" << tno;
+        std::cout << "\nTrain name:";
+        std::cout << tname;
+        std::cout << "Boarding point:";
+        std::cout << bp;
+        std::cout << "Destination pt:";
+        std::cout << dest;
+        cout << "\nYour class:";
+        std::cout << clas;
+        cout << "no of seats to be cancelled:" << nosc;
+        for (i = 0; i < nosc; i++)
         {
-            location=e;
+            std::cout << "Passenger name:";
+            std::cout << pname[i];
+            std::cout << "passenger age:" << age[i];
+        }
+        std::cout << "\nDate of cancellation:" << d << "-" << m << "-" << y;
+        std::cout << "\nYou can collect:" << amr << "rs" << endl;
+        std::cout << "***************\n";
+        std::cout << "………END OF CANCELLATION………….\n";
+        std::cout << "***************\n";
+    }
+};
+void manage();
+void can();
+void user();
+void database();
+void res();
+void reserve();
+void displaypassdetail();
+void cancell();
+void enquiry();
+int main(void)
+{
+int ch;
+std::cout << "----- RAILWAY RESERVATION SYSTEM ----- \n";
+do
+{
+std::cout << "\n MAIN MENU \n";
+std::cout << "1.Admin mode\n2.User mode\n3.Exit \n";
+std::cout << "Enter your choice : ";
+std::cin >> ch;
+switch(ch)
+{
+case 1:
+database();
+break;
+case 2:
+user();
+break;
+default:
+exit(0);
+}
+}while(ch<3);
+ 
+return 0;
+}
+ 
+void database()
+{
+char password[10];
+char pass[10] = "admin";
+std::cout << "\nEnter the Admin Password: ";
+std::cin >> password;
+Detail a;
+fstream f;
+int ch;
+char c;
+if(strcmp(pass,password)!=0)
+{
+std::cout << "Enter the password correctly \n";
+std::cout << "You are not permitted to login this mode\n";
+}
+if(strcmp(pass,password)==0)
+{
+char c;
+do
+{
+std::cout << "\n --- ADMINISTRATOR MENU --- \n";
+std::cout << "1. Create detail Database \n";
+std::cout << "2. Add details \n";
+std::cout << "3. Display details \n";
+std::cout << "4. User Management \n";
+std::cout << "5. Diplay Passenger details \n";
+std::cout << "6. Return to Main Menu \n";
+std::cout << "Enter your choice : ";
+std::cin >> ch;
+ 
+switch(ch)
+{
+case 1:
+f.open("t.txt",ios::out|ios::binary);
+do
+{
+a.getDetail();
+f.write((char *) & a,sizeof(a));
+cout << "\nDo you want to add one more record?\n";
+cout << "y-for Yes\nn-for No\n";
+cin >> c;
+}while(c=='y');
+f.close();
+break;
+case 2:
+f.open("t.txt",ios::in|ios::out|ios::binary|ios::app);
+a.getDetail();
+f.write((char *) & a,sizeof(a));
+f.close();
+break;
+case 3:
+f.open("t.txt",ios::in|ios::out|ios::binary|ios::app);
+f.seekg(0);
+while(f.read((char *) & a,sizeof(a)))
+{
+a.displaydetail();
+}
+f.close();
+break;
+case 4:
+manage();
+break;
+case 5:
+displaypassdetail();
+break;
+}
+}while(ch<=5);
+}
+}
+ 
+void reserve()
+{
+    int ch;
+    do
+    {
+        std::cout << "1.Reserve\n2.Return to the main menu\n";
+        std::cout << "Enter your choice:";
+        std::cin >> ch;
+        std::cout << endl;
+        switch (ch)
+        {
+        case 1:
+            res();
             break;
         }
-    }
-    if (location==-1)
+    } while (ch == 1);
+}
+ 
+void res()
+{
+    Detail a;
+    reser b;
+    fstream f1, f2;
+    time_t t;
+    f1.open("t.txt", ios::in | ios::out | ios::binary);
+    f2.open("p.txt", ios::in | ios::out | ios::binary | ios::app);
+    int ch;
+    b.getresdet();
+    while (f1.read((char *)&a, sizeof(a)))
     {
-        printf ("\n\n\t\t\t<<<<<<<<<<<<<<Data Not Found>>>>>>>>>>>>>>>>> \n");
-        getch();
-        system("cls");
-        main();
-    }
-    else
-    {
-        for (e=location;e<u;e++)
+        if (a.tno == b.tno)
         {
-            strcpy(book[e].date,book[e+1].date);
-            strcpy(book[e].train_number,book[e+1].train_number);
-            strcpy(book[e].name,book[e+1].name);
-            strcpy(book[e].phone,book[e+1].phone);
-            bookticket_write();
+            if (strcmp(b.clas, f) == 0)
+            {
+                if (a.c1 >= b.nosr)
+                {
+                    amt = a.c1fare;
+                    addr = f1.tellg();
+                    ad = sizeof(a.c1);
+                    f1.seekp(addr - (7 * ad));
+                    a.c1 = a.c1 - b.nosr;
+                    f1.write((char *)&a.c1, sizeof(a.c1));
+                    if (b.con == 1)
+                    {
+                        cout << "Concession category:MILITARY PERSONNEL\n";
+                        b.amc = b.nosr * ((amt * 50) / 100);
+                    }
+                    else if (b.con == 2)
+                    {
+                        cout << "Concession category:SENIOR CITIZEN\n";
+                        b.amc = b.nosr * ((amt * 60) / 100);
+                    }
+                    else if (b.con == 3)
+                    {
+                        cout << "Concession category:CHILDERN BELOW FIVE\n";
+                        b.amc = 0.0;
+                    }
+                    else if (b.con == 4)
+                    {
+                        cout << "You cannot get any concession\n";
+                        b.amc = b.nosr * amt;
+                    }
+                    srand((unsigned)time(&t));
+                    b.pnr = rand();
+                    f2.write((char *)&b, sizeof(b));
+                    b.displayresdet();
+                    cout << "\n-----Your ticket is reserved-----\n";
+                }
+                else
+                {
+                    cout << "***Sorry req seats not available***\n";
+                }
+            }
+            else if (strcmp(b.clas, s) == 0)
+            {
+                if (a.c2 >= b.nosr)
+                {
+                    amt = a.c2fare;
+                    addr = f1.tellg();
+                    ad = sizeof(a.c2);
+                    f1.seekp(addr - (5 * ad));
+                    a.c2 = a.c2 - b.nosr;
+                    f1.write((char *)&a.c2, sizeof(a.c2));
+                    if (b.con == 1)
+                    {
+                        cout << "Concession category:MILITARY PRESONNEL\n";
+                        b.amc = b.nosr * ((amt * 50) / 100);
+                    }
+                    else if (b.con == 2)
+                    {
+                        cout << "Concession category:SENIOR CITIZEN\n";
+                        b.amc = b.nosr * ((amt * 60) / 100);
+                    }
+                    else if (b.con == 3)
+                    {
+                        cout << "Concession category:CHILDERN BELOW FIVE\n";
+                        b.amc = 0.0;
+                    }
+                    else if (b.con == 4)
+                    {
+                        cout << "You cannot get any concession\n";
+                        b.amc = b.nosr * amt;
+                    }
+                    f2.write((char *)&b, sizeof(b));
+                    b.displayresdet();
+                    cout << "\n-----Your ticket is reserved-----\n";
+                }
+                else
+                {
+                    cout << "***Sorry req no of seats not available**\n";
+                }
+            }
         }
-        u--;
-        bookticket_write();
-        printf("\n\n\t\t\t<<<<<<<<<<<<<<<ticket cancelled successfully>>>>>>>>>>>>");
-        getch();
-        system("cls");
-        main();
+        else
+        {
+            flag = 0;
+        }
+    }
+    if (flag == 0)
+    {
+        cout << "!\n";
+    }
+    f1.close();
+    f2.close();
+}
+ 
+void displaypassdetail()
+{
+std::cout << "\n--------Passenger Details--------\n";
+fstream f;
+reser b;
+f.open("p.txt",ios::in|ios::out|ios::binary);
+f.seekg(0);
+while(f.read((char *) & b,sizeof(b)))
+{
+b.displayresdet();
+}
+f.close();
+}
+void enquiry()
+{
+    fstream f;
+    f.open("t.txt",ios::in|ios::out|ios::binary);
+    Detail a;
+    while(f.read((char *) & a,sizeof(a)))
+    {
+            a.displaydetail();
     }
 }
-//-------------------------------------admin portal function----------------------------------------
-void admin()
+void cancell()
 {
-	int chhh;
-	system("cls");
-	printf("\n     ==================================================================");
-	printf("\n     ********************RAILWAY RESERVATION SYSTEM*******************");
-	printf("\n     ====================================================================");
-	printf("\n\n");
-	printf("           <<<<<<<<<<<<<<<WELCOME_ADMIN>>>>>>>>>>>>>>>\n");
-	printf("\n\n");
-	printf("              ************************************\n");
-	printf("              ||      CHOOSE YOUR OPERATION     ||\n");
-	printf("              ||--------------------------------||\n");
-	printf("              ||      [1] VIEW PASSENGERS       ||\n");
-	printf("              ||      [2] ADD TRAIN             ||\n");
-	printf("              ||      [3] DELETE TRAIN          ||\n");
-	printf("              ||      [4] BACK                  ||\n");
-	printf("              ||                                ||\n");
-	printf("              ************************************\n\n");
-	printf("     **********************************************************\n");
-	printf("\n\t\tENTER YOUR CHOICE: ");
-	scanf("%d",&chhh);
-	switch(chhh)
-	{
-		case 1:
-			viewpassenger();
-			break;
-			case 2:
-				addtrain();
-				break;
-				case 3:
-					dlttrain();
-					break;
-					case 4:
-						system("cls");
-						getch();
-						main();
-						break;
-						default:
-							getch();
-							printf("\n\t\t\tyou entered wrong KEY!!!!");
-							getch();
-							system("cls");
-							main();
-	}
-	getch();
-}
-//-----------------------------password function----------------------------------
-void password()
-{
-	int number=1234567;
-	int pass;
-	printf("\n\t\t\tenter password: ");
-	scanf("%d",&pass);
-	if(pass==number)
-	{
-		printf("\n\n\t\t\t<<<<<login successfully>>>>>");
-		getch();
-		system("cls");
-		admin();
-	}
-	else
-	{
-		printf("\n\n\t\t\t\t   ERROR!!!!!");
-		printf("\n\n\t\t\t<<<<<<<<wrong password>>>>>>>>");
-		getch();
-		system("cls");
-		main();
-	}
-}
-//------------------------------------delete train function----------------------------------------------
-void dlttrain()
-{
-	aread();
-    char train[100];
-    int location = -1,f;
-    printf ("\n\n\tenter train number: ");
-    scanf ("%s",train);
-    for (f=0;f<k;f++)
+    Detail a;
+    reser b;
+    canc c;
+    fstream f1, f2, f3;
+    f1.open("t.txt",ios::in|ios::out|ios::binary);
+    f2.open("p.txt",ios::in|ios::out|ios::binary);
+    f3.open("cn.txt",ios::in|ios::out|ios::binary);
+    cout<<"***CANCELLATION MENU****\n";
+    c.getcancdet();
+    while(f2.read((char *) & b,sizeof(b)))
     {
-        if (strcmp(train,add[f].train_number)==0)
+        if (b.pnr == c.pnr)
         {
-            location=f;
+            c.tno = b.tno;
+            strcpy(c.tname, b.tname);
+            strcpy(c.bp, b.bp);
+            strcpy(c.dest, b.dest);
+            c.nosc = b.nosr;
+            for (int j = 0; j < c.nosc; j++)
+            {
+                strcpy(c.pname[j], b.pname[j]);
+                c.age[j] = b.age[j];
+            }
+            strcpy(c.clas, b.clas);
+            if (strcmp(c.clas, f) == 0)
+            {
+                while (f1.read((char *)&a, sizeof(a)))
+                {
+                    if (a.tno == c.tno)
+                    {
+                        a.c1 = a.c1 + c.nosc;
+                        d = a.d;
+                        m = a.m;
+                        addr = f1.tellg();
+                        ad = sizeof(a.c1);
+                        f1.seekp(addr - (7 * ad));
+                        f1.write((char *)&a.c1, sizeof(a.c1));
+                        tamt = b.amc;
+                        if ((c.d == d) && (c.m == m))
+                        {
+                            cout << "You are cancelling at the date of departure\n";
+                            c.amr = tamt - ((tamt * 60) / 100);
+                        }
+                        else if (c.m == m)
+                        {
+                            cout << "You are cancelling at the month of departure\n";
+                            c.amr = tamt - ((tamt * 50) / 100);
+                        }
+                        else if (m > c.m)
+                        {
+                            cout << "You are cancelling one month before the date of departure\n";
+                            c.amr = tamt - ((tamt * 20) / 100);
+                        }
+                        else
+                        {
+                            cout << "Cancelling after the departure\n";
+                            cout << "Your request cannot be completed\n";
+                        }
+                        goto h;
+                        c.displaycancdet();
+                    }
+                }
+            }
+            else if (strcmp(c.clas, s) == 0)
+            {
+                while (f1.read((char *)&a, sizeof(a)))
+                {
+                    if (a.tno == c.tno)
+                    {
+                        a.c2 = a.c2 + c.nosc;
+                        d = a.d;
+                        m = a.m;
+                        addr = f1.tellg();
+                        ad = sizeof(a.c2);
+                        f1.seekp(addr - (5 * ad));
+                        f1.write((char *)&a.c2, sizeof(a.c2));
+                        tamt = b.amc;
+                        if ((c.d == d) && (c.m == m))
+                        {
+                            cout << "You are cancelling at the date of departure\n";
+                            c.amr = tamt - ((tamt * 60) / 100);
+                        }
+                        else if (c.m == m)
+                        {
+                            cout << "You are cancelling at the month of departure\n";
+                            c.amr = tamt - ((tamt * 50) / 100);
+                        }
+                        else if (m > c.m)
+                        {
+                            cout << "You are cancelling one month before the date of departure\n";
+                            c.amr = tamt - ((tamt * 20) / 100);
+                        }
+                        else
+                        {
+                            cout << "Cancelling after the departure\n";
+                            cout << "Your request cannot be completed\n";
+                        }
+                        goto h;
+                        c.displaycancdet();
+                    }
+                }
+            }
+        }
+        else
+        {
+            flag = 0;
+        }
+    }
+    h:
+    if(flag==0)
+    {
+            cout << "Enter the correct pnr no\n";
+    }
+    f1.close();
+    f2.close();
+    f3.close();
+}
+void can()
+{
+    int ch;
+    do
+    {
+        cout << "……………..CANCELLATION MENU………\n";
+        cout << "1.Cancel\n2.Return to the main menu\n";
+        cout << "Enter your choice:";
+        cin >> ch;
+        cout << endl;
+        switch (ch)
+        {
+        case 1:
+            cancell();
             break;
         }
-    }
-    if (location==-1)
-    {
-        printf ("\n\n\t<<<<<<<<<<<<<<Data Not Found>>>>>>>>>>>>>>>>> \n");
-        getch();
-        system("cls");
-        admin();
-    }
-    else
-    {
-        for (f=location;f<k;f++)
-        {
-            strcpy(add[f].si,add[f+1].si);
-            strcpy(add[f].train_number,add[f+1].train_number);
-            strcpy(add[f].train_name,add[f+1].train_name);
-            strcpy(add[f].start,add[f+1].start);
-            strcpy(add[f].destination,add[f+1].destination);
-            strcpy(add[f].price,add[f+1].price);
-            strcpy(add[f].time,add[f+1].time);
-            awrite();
-        }
-        k--;
-        awrite();
-		printf("\n\n\t<<<<<<<<<<<<<train deleted successfully>>>>>>>>>>>>>");
-		getch();
-		system("cls");
-		admin();
-    }
+    } while (ch == 1);
 }
-//--------------------------------------view passengers function----------------------------------------
-void viewpassenger()
+void user()
 {
-	int a,j;
-	system("cls");
-	viewpassengers_read();
-	printf("\n\t\t\t       **********************************************************");
-	printf("\n\t\t\t       ********************RAILWAY RESERVATION SYSTEM********************");
-	printf("\n\t\t\t       **********************************************************");
-	printf("\n\n\t\t\ttrain number\t\tname\t\tphone number\t\tdate\t\tseat\n");
-	printf("\n\t\t\t**********************************************************************************\n");
-	for(j=0;j<u;j++)
-	{
-		printf("\n\t\t\t%s\t\t\t%s\t\t%s\t\t%s\t%d",book[j].train_number,book[j].name,book[j].phone,book[j].date,book[j].seat);
-		book[j].seat++;
-	}
-	printf("\n\t\t\t**********************************************************************************\n");
-	printf("\n\n\t\t\tenter '1' for main menu & enter '0' for back: ");
-	scanf("%d",&a);
-	if(a==1)
-	{
-		system("cls");
-		main();
-	}
-	if(a==0)
-	{
-		system("cls");
-		admin();
-	}
-}
-//--------------------------------------add train function--------------------------------------------
-void addtrain()
+login a;
+int ch;
+cout<<"\n-----Login User-----\n";
+char password[10];
+fstream f;
+f.open("id.txt",ios::in|ios::out|ios::binary);
+char id[100];
+std::cout << "Enter your ID : ";
+std::cin >> id;
+std::cout << "Enter your Password : ";
+std::cin >> password;
+while(f.read((char *) & a,sizeof(a)))
 {
-	system("cls");
-	int ch;
-	aread();
-	int i,a;
-	printf("\n\t\t     **********************************************************");
-	printf("\n\t\t     ********************RAILWAY RESERVATION SYSTEM********************");
-	printf("\n\t\t     **********************************************************");
-	printf("\n\n\t\t\thow many trains do you want to add: ");
-	scanf("%d",&a);
-	for(i=k;i<k+a;i++)
-	{
-		printf("\n\t\t\tenter %d train details: ",i+1);
-		printf("\n\t\t\tenter serial number: ");
-		scanf("%s",add[i].si);
-		printf("\n\t\t\tenter train number: ");
-		scanf("%s",add[i].train_number);
-		printf("\n\t\t\tenter train name: ");
-		scanf("%s",add[i].train_name);
-		printf("\n\t\t\tenter start place: ");
-		scanf("%s",add[i].start);
-		printf("\n\t\t\tenter destination place: ");
-		scanf("%s",add[i].destination);
-		printf("\n\t\t\t enter price: ");
-		scanf("%s",add[i].price);
-		printf("\n\t\t\t enter seat: ");
-		scanf("%d", & add[i].seat);
-		printf("\n\t\t\t enter time: ");
-		scanf("%s",add[i].time);
-	}
-		printf("\n\n\t\t\tconfirm train: (y=1/n=0):- ");
-		scanf("%d",&ch);
-		if(ch==1)
-		{
-			awrite();
-			k=i;
-			awrite();
-			system("cls");
-			printf("\n\n\t\t\t**********************************************************");
-			printf("\n\t\t\t********************RAILWAY RESERVATION SYSTEM********************");
-			printf("\n\t\t\t**********************************************************");
-			printf("\n\n");
-			printf("\n\t\t\t\t   **********************************");
-			printf("\n\t\t\t\t   *<<<<<train add successfully>>>>>*");
-			printf("\n\t\t\t\t   **********************************");
-			getch();
-			system("cls");
-			main();
-		}
-			if(ch==0)
-			{
-				system("cls");
-				admin();
-			}
-			if((ch!=1)&&(ch!=0))
-			{
-				system("cls");
-				main();
-			}
-}
-//-----------------------------------view information function--------------------------------------
-void viewinfo()
+if((strcmp(a.id,id)==0)&&(strcmp(a.pass,password)==0))
 {
-	int ch,i;
-	system("cls");
-	aread();
-	printf("\n\t\t     **********************************************************");
-	printf("\n\t\t     ********************RAILWAY RESERVATION SYSTEM********************");
-	printf("\n\t\t     **********************************************************");
-	printf("\n\n\n    SI\ttrain number\ttrain name\tstart place\tdestination place\tprice\tseat\ttime\n\n");
-	for(i=0;i<k;i++)
-	{
-		printf("    %s\t%s\t\t%s\t\t%s\t\t%s\t\t\t%s\t%d\t%s\n",add[i].si,add[i].train_number,add[i].train_name,add[i].start,add[i].destination,add[i].price,add[i].seat,add[i].time);
-	}
-	printf("    ***********************************************************************************************\n");
-	printf("\n\t\t\tpress '1' for main menu & press any key for exit:  ");
-	scanf("%d",&ch);
-	switch(ch)
-	{
-		case 1:
-			system("cls");
-			main();
-			break;
-				default:
-					exit(0);
-	}
-}
-//------------------------------------------book ticket file start-----------------------------------------
-void bookticket_write()
+do
 {
-	FILE *booklist;
-	booklist=fopen("booklist.txt","w");
-	fwrite(&book,sizeof(book),1,booklist);
-	fclose(booklist);
-	FILE *booklistreport;
-	booklistreport=fopen("booklistreport.txt","w");
-	fwrite(&u,sizeof(u),1,booklistreport);
-	fclose(booklistreport);
-}
-void viewpassengers_read()
+std::cout<<"\n1.Reserve\n2.Cancel\n3.Enquiry\n4.Return to the main menu\n";
+cout<<"Enter your choice:";
+cin>>ch;
+switch(ch)
 {
-	FILE *booklist;
-	booklist=fopen("booklist.txt","r");
-	fread(&book,sizeof(book),1,booklist);
-	fclose(booklist);
-	FILE *booklistreport;
-	booklistreport=fopen("booklistreport.txt","r");
-	fread(&u,sizeof(u),1,booklistreport);
-	fclose(booklistreport);
+case 1:
+reserve();
+break;
+case 2:
+cancell();
+break;
+case 3:
+enquiry();
+break;
 }
-//-----------------------------------------add train file start---------------------------------------------------
-void awrite()
+}while(ch<=3);
+}
+else
 {
-	FILE *train_details;
-	train_details = fopen("train_details.txt","w");
-	fwrite(&add,sizeof(add),1,train_details);
-	fclose(train_details);
-	FILE *train_report;
-	train_report = fopen("train_report.txt","w");
-	fwrite(&k,sizeof(k),1,train_report);
-	fclose(train_report);
+d=1;
 }
-void aread()
+}
+if(d==1)
 {
-	FILE *train_details;
-	train_details = fopen("train_details.txt","r");
-	fread(&add,sizeof(add),1,train_details);
-	fclose(train_details);
-	FILE *train_report;
-	train_report = fopen("train_report.txt","r");
-	fread(&k,sizeof(k),1,train_report);
-	fclose(train_report);
+cout<<"Enter your user id and password correctly\n";
 }
-//----------------------------------------------------file close----------------------------------------------
-//----------------------------------------------------program close----------------------------------------
+}
+ 
+void manage()
+{
+int ch;
+fstream f;
+char c;
+login a;
+std::cout<<"\n---WELCOME TO THE USER MANAGEMENT MENU---\n";
+do
+{
+std::cout << "1. Create id database\n";
+std::cout << "2. Add details\n";
+std::cout << "3. Display details\n";
+std::cout << "4. Return to the main menu\n";
+std::cout << "Enter your choice: ";
+std::cin>>ch;
+switch(ch)
+{
+case 1:
+f.open("id.txt",ios::out|ios::binary);
+do
+{
+a.getid();
+f.write((char *) & a,sizeof(a));
+std::cout << "Do you want to add one more record\n";
+std::cout << "y-Yes\nn-No\n";
+std::cin>>c;
+}while(c == 'y');
+f.close();
+break;
+case 2:
+f.open("id.txt",ios::in|ios::out|ios::binary|ios::app);
+a.getid();
+f.write((char *) & a,sizeof(a));
+f.close();
+break;
+case 3:
+f.open("id.txt",ios::in|ios::out|ios::binary);
+f.seekg(0);
+while(f.read((char *) & a,sizeof(a)))
+{
+a.displayid();
+}
+f.close();
+break;
+}
+}while(ch<=3);
+}
